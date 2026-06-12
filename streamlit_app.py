@@ -1,12 +1,19 @@
 import streamlit as st
 from langchain_core.messages import HumanMessage, AIMessage
 # Import the engine function from your backend file!
-from backend import get_tutor_response
+from services.chat_service import get_tutor_response
+from backend import get_rag_chain
+
+@st.cache_resource
+def load_chain():
+    return get_rag_chain()
+
+chain = load_chain()
 
 # 1. Page Configuration Setup
 st.set_page_config(page_title="B.Tech AI Tutor", page_icon="🎓", layout="centered")
 st.title("🎓 Your Personal B.Tech AI Tutor")
-st.subheader("Ask questions from your Data Structures syllabus")
+st.subheader("Ask questions from your any syllabus")
 
 # Initialize chat history tracker in the browser session memory
 if "chat_history" not in st.session_state:
